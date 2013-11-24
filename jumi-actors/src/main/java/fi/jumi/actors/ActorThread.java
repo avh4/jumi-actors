@@ -26,7 +26,7 @@ public interface ActorThread {
      * After nobody is holding the actor's {@link ActorRef}, that actor will be garbage collected. It is OK to create
      * lots of short-lived actors.
      */
-    <T> ActorRef<T> bindActor(Class<T> type, T rawActor);
+    <T> ActorRef<T> bindActor(Class<? extends T> type, T rawActor);
 
     /**
      * Stops <em>all</em> actors which are bound to this {@code ActorThread} after all previously sent messages to them

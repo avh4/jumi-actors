@@ -50,8 +50,8 @@ public abstract class Actors {
         private final MessageQueue<Runnable> taskQueue = new MessageQueue<Runnable>();
 
         @Override
-        public <T> ActorRef<T> bindActor(Class<T> type, T rawActor) {
-            Eventizer<T> eventizer = eventizerProvider.getEventizerForType(type);
+        public <T> ActorRef<T> bindActor(Class<? extends T> type, T rawActor) {
+            Eventizer<T> eventizer = (Eventizer<T>) eventizerProvider.getEventizerForType(type);
             T proxy = eventizer.newFrontend(new MessageToActorSender<T>(this, rawActor));
             return ActorRef.wrap(type.cast(proxy));
         }

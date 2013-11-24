@@ -11,6 +11,8 @@ import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.mockito.InOrder;
 
+import java.util.*;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -263,5 +265,16 @@ public abstract class ActorsContract<T extends Actors> extends ActorsContractHel
         inOrder.verify(messageListener).onMessageSent(new OnSomethingEvent("parameter"));
         inOrder.verify(messageListener).onProcessingStarted(rawActor, new OnSomethingEvent("parameter"));
         inOrder.verify(messageListener).onProcessingFinished();
+    }
+
+
+    // syntax
+
+    @Test
+    public void can_bind_an_actor_with_type_parameters() {
+        ActorThread actorThread = actors.startActorThread();
+        ActorRef<List<String>> actorRef = actorThread.<List<String>>bindActor(List.class, new ArrayList<String>());
+        // if the previous line compiles, it's okay
+        assertThat(actorRef, notNullValue());
     }
 }
